@@ -79,6 +79,7 @@ class PhotosViewController: UIViewController, UITableViewDelegate, UITableViewDa
         cell.usernameLabel.text = data.value(forKeyPath: "user.username") as? String
         cell.photoImageView.setImageWith(URL(string: data.value(forKeyPath: "images.thumbnail.url") as! String)!)
         cell.avatarImageView.setImageWith(URL(string: data.value(forKeyPath: "user.profile_picture") as! String)!)
+        cell.accessoryType = UITableViewCellAccessoryType.none
         return cell
     }
 
