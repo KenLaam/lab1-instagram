@@ -64,9 +64,12 @@ class PhotosViewController: UIViewController, UITableViewDelegate, UITableViewDa
         }
     }
     
+    public func numberOfSections(in tableView: UITableView) -> Int {
+        return photos.count
+    }
     
     public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return photos.count
+        return 1
     }
     
     public func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -75,7 +78,7 @@ class PhotosViewController: UIViewController, UITableViewDelegate, UITableViewDa
     
     public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = photosTableView.dequeueReusableCell(withIdentifier: "photoCell", for: indexPath) as! PhotoViewCell
-        let data = photos[indexPath.row] as NSDictionary
+        let data = photos[indexPath.section] as NSDictionary
         cell.usernameLabel.text = data.value(forKeyPath: "user.username") as? String
         cell.photoImageView.setImageWith(URL(string: data.value(forKeyPath: "images.thumbnail.url") as! String)!)
         cell.avatarImageView.setImageWith(URL(string: data.value(forKeyPath: "user.profile_picture") as! String)!)
@@ -92,7 +95,7 @@ class PhotosViewController: UIViewController, UITableViewDelegate, UITableViewDa
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         let nextVC = segue.destination as! DetailViewController
-        let index = photosTableView.indexPathForSelectedRow?.row
+        let index = photosTableView.indexPathForSelectedRow?.section
         let data = photos[index!] as NSDictionary
         nextVC.data = data
         
