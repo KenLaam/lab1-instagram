@@ -67,7 +67,6 @@ class PhotosViewController: UIViewController, UITableViewDelegate, UITableViewDa
     public func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 200
     }
-
     
     public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = photosTableView.dequeueReusableCell(withIdentifier: "photoCell", for: indexPath) as! PhotoViewCell
@@ -75,7 +74,6 @@ class PhotosViewController: UIViewController, UITableViewDelegate, UITableViewDa
         cell.usernameLabel.text = data.value(forKeyPath: "user.username") as? String
         cell.photoImageView.setImageWith(URL(string: data.value(forKeyPath: "images.thumbnail.url") as! String)!)
         cell.avatarImageView.setImageWith(URL(string: data.value(forKeyPath: "user.profile_picture") as! String)!)
-
         return cell
     }
 
@@ -83,12 +81,15 @@ class PhotosViewController: UIViewController, UITableViewDelegate, UITableViewDa
 
     /*
     // MARK: - Navigation
-
+    */
+    
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
+        let nextVC = segue.destination as! DetailViewController
+        let index = photosTableView.indexPathForSelectedRow?.row
+        let data = photos[index!] as NSDictionary
+        nextVC.data = data
+        
     }
-    */
 
 }
