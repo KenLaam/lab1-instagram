@@ -14,6 +14,7 @@ class PhotosViewController: UIViewController, UITableViewDelegate, UITableViewDa
     
     @IBOutlet weak var photosTableView: UITableView!
     var photos = [NSDictionary]()
+    let refreshControl = UIRefreshControl()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -22,6 +23,9 @@ class PhotosViewController: UIViewController, UITableViewDelegate, UITableViewDa
         photosTableView.delegate = self
         photosTableView.dataSource = self
         fetchData()
+        refreshControl.addTarget(self, action: #selector(PhotosViewController.fetchData), for: UIControlEvents.valueChanged)
+        photosTableView.insertSubview(refreshControl, at: 0)
+
     }
 
     override func didReceiveMemoryWarning() {
@@ -51,6 +55,7 @@ class PhotosViewController: UIViewController, UITableViewDelegate, UITableViewDa
                             if let photoData = responseDictionary["data"] as? [NSDictionary] {
                                 self.photos = photoData
                                 self.photosTableView.reloadData()
+                                self.refreshControl.endRefreshing()
                             }
                         }
                     }
