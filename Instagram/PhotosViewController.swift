@@ -73,15 +73,38 @@ class PhotosViewController: UIViewController, UITableViewDelegate, UITableViewDa
     }
     
     public func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 200
+        return 170
+    }
+    
+    public func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        let data = photos[section] 
+        
+        let headerView = UIView(frame: CGRect(x: 0, y: 0, width: 320, height: 50))
+        headerView.backgroundColor = UIColor(white: 1, alpha: 0.9)
+
+        let profileView = UIImageView(frame: CGRect(x: 10, y: 10, width: 32, height: 32))
+        profileView.clipsToBounds = true
+        profileView.layer.cornerRadius = 15
+        profileView.layer.borderColor = UIColor(white: 0.7, alpha: 0.8).cgColor
+        profileView.layer.borderWidth = 1
+        profileView.setImageWith(URL(string: data.value(forKeyPath: "user.profile_picture") as! String)!)
+        
+        let usernameView = UILabel(frame: CGRect(x: 48, y: 15, width: 200, height: 22))
+        usernameView.text = (data.value(forKeyPath: "user.username") as! String)
+        
+        headerView.addSubview(profileView)
+        headerView.addSubview(usernameView)
+        return headerView
+    }
+    
+    public func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return 50
     }
     
     public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = photosTableView.dequeueReusableCell(withIdentifier: "photoCell", for: indexPath) as! PhotoViewCell
         let data = photos[indexPath.section] as NSDictionary
-        cell.usernameLabel.text = data.value(forKeyPath: "user.username") as? String
         cell.photoImageView.setImageWith(URL(string: data.value(forKeyPath: "images.thumbnail.url") as! String)!)
-        cell.avatarImageView.setImageWith(URL(string: data.value(forKeyPath: "user.profile_picture") as! String)!)
         cell.accessoryType = UITableViewCellAccessoryType.none
         return cell
     }
